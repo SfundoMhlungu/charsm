@@ -136,33 +136,30 @@ alignV works!
 ### Simple Example
 
 ```js
-    lip.createStyle({
-        id: "primary",
-        canvasColor: { color: "#7D56F4" },
-        border: { type: "rounded", background: "#0056b3", sides: [true] },
-        padding: [6, 8, 6, 8],
-        margin: [0, 2, 8, 2],
-        bold: true,
-        align: 'center',
-        width: 10,
-        height: 12,
-    });;
+lip.createStyle({
+    id: "primary",
+    canvasColor: { color: "#7D56F4" },
+    border: { type: "rounded", background: "#0056b3", sides: [true] },
+    padding: [6, 8, 6, 8],
+    margin: [0, 2, 8, 2],
+    bold: true,
+    align: 'center',
+    width: 10,
+    height: 12,
+});;
 
- lip.createStyle({
+lip.createStyle({
     id: "secondary",
-  canvasColor: {color: "#7D56F4" },
-  border: { type: "rounded", background: "#0056b3", sides: [true, false] },
-  padding: [6, 8, 6, 8],
-   margin: [0, 0, 8, 1],
+    canvasColor: {color: "#7D56F4" },
+    border: { type: "rounded", background: "#0056b3", sides: [true, false] },
+    padding: [6, 8, 6, 8],
+    margin: [0, 0, 8, 1],
     bold: true,
     // alignH: "right",
-
-   alignV: "bottom",
-   width: 10, 
-   height: 12,
-
-  });
-
+    alignV: "bottom",
+    width: 10, 
+    height: 12,
+});
 
 const a = lip.apply({ value: "Charsmmm", id: "secondary" });
 const b = lip.apply({ value: "🔥🦾🍕", id: "primary" });
@@ -174,13 +171,26 @@ const c = lip.apply({ value: 'Charsmmm', id: "secondary" });
 1. completeAdaptiveColor
 
 ```js
- lip.createStyle({
-       id: "primary",
-     canvasColor: {color: "#7D56F4", background:{completeAdaptiveColor: {  Light:{TrueColor: "#d7ffae", ANSI256: "193", ANSI: "11"}, Dark: {TrueColor: "#d75fee", ANSI256: "163", ANSI: "5"}}}},
-   
-
-     });
-
+lip.createStyle({
+    id: "primary",
+    canvasColor: {
+        color: "#7D56F4",
+        background:{
+            completeAdaptiveColor: {
+                Light:{
+                    TrueColor: "#d7ffae",
+                    ANSI256: "193",
+                    ANSI: "11"
+                },
+                Dark: {
+                    TrueColor: "#d75fee",
+                    ANSI256: "163",
+                    ANSI: "5"
+                }
+            }
+        }
+    },   
+});
 ```
 
 2. Adaptive Color 
@@ -241,7 +251,6 @@ use's [glamour](github.com/charmbracelet/glamour) from charm CLI underneath
 
 ```js
 
-
   const content = `
 # Today’s Menu
 
@@ -298,44 +307,44 @@ Here's an example of `Join`:
 
 ```go
 func (l *lipWrapper) Join(this js.Value, args []js.Value) interface{} {
-	direction := args[0].Get("direction").String()
+    direction := args[0].Get("direction").String()
 
-	var elements []string
-	e := args[0].Get("elements")
-	for i := 0; i < e.Length(); i++ {
-		elements = append(elements, e.Index(i).String())
-	}
+    var elements []string
+    e := args[0].Get("elements")
+    for i := 0; i < e.Length(); i++ {
+        elements = append(elements, e.Index(i).String())
+    }
 
-	if CheckTruthy(args, "pc") {
-		if direction == "vertical" {
-			return lipgloss.JoinVertical(lipgloss.Position(args[0].Get("pc").Int()), elements...)
-		} else {
-			return lipgloss.JoinHorizontal(lipgloss.Position(args[0].Get("pc").Int()), elements...)
-		}
-	}
+    if CheckTruthy(args, "pc") {
+        if direction == "vertical" {
+            return lipgloss.JoinVertical(lipgloss.Position(args[0].Get("pc").Int()), elements...)
+        } else {
+            return lipgloss.JoinHorizontal(lipgloss.Position(args[0].Get("pc").Int()), elements...)
+        }
+    }
 
-	if CheckTruthy(args, "position") {
-		pos := args[0].Get("position").String()
-		var apos lipgloss.Position
+    if CheckTruthy(args, "position") {
+        pos := args[0].Get("position").String()
+        var apos lipgloss.Position
 
-		if pos == "bottom" {
-			apos = lipgloss.Bottom
-		} else if pos == "top" {
-			apos = lipgloss.Top
-		} else if pos == "right" {
-			apos = lipgloss.Right
-		} else {
-			apos = lipgloss.Left
-		}
+        if pos == "bottom" {
+            apos = lipgloss.Bottom
+        } else if pos == "top" {
+            apos = lipgloss.Top
+        } else if pos == "right" {
+            apos = lipgloss.Right
+        } else {
+            apos = lipgloss.Left
+        }
 
-		if direction == "vertical" {
-			return lipgloss.JoinVertical(apos, elements...)
-		} else {
-			return lipgloss.JoinHorizontal(apos, elements...)
-		}
-	}
+        if direction == "vertical" {
+            return lipgloss.JoinVertical(apos, elements...)
+        } else {
+            return lipgloss.JoinHorizontal(apos, elements...)
+        }
+    }
 
-	return ""
+    return ""
 }
 ```
 
@@ -354,50 +363,49 @@ Meaning, yes, the Go code is all over the place! Here’s a look at `main` for c
 
 ```go
 func main() {
+    lip := &lipWrapper{}
+    lip.styles = make(map[string]string)
+    lip.styles2o = make(map[string]lipgloss.Style)
 
-	lip := &lipWrapper{}
-	lip.styles = make(map[string]string)
-	lip.styles2o = make(map[string]lipgloss.Style)
+    // Export the `add` function to JavaScript
+    // js.Global().Set("add", js.FuncOf(add))
+    // js.Global().Set("greet", js.FuncOf(greet))
+    // js.Global().Set("multiply", js.FuncOf(multiply))
+    // js.Global().Set("processUser", js.FuncOf(processUser))
+    // js.Global().Set("asyncAdd", js.FuncOf(asyncAdd))
+    // js.Global().Set("lipprint", js.FuncOf(printWithGloss))
+    // js.Global().Set("lipgloss", js.Func(lipgloss.NewStyle))
+    js.Global().Set("createStyle", js.FuncOf(lip.createStyle))
+    js.Global().Set("apply", js.FuncOf(lip.apply))
+    // js.Global().Set("canvasColor", js.FuncOf(lip.canvasColor))
+    // js.Global().Set("padding", js.FuncOf(lip.canvasColor))
+    // js.Global().Set("render", js.FuncOf(lip.render))
+    // js.Global().Set("margin", js.FuncOf(lip.margin))
+    // js.Global().Set("place", js.FuncOf(lip.place))
+    // js.Global().Set("size", js.FuncOf(lip.size))
+    // js.Global().Set("JoinHorizontal", js.FuncOf(lip.JoinHorizontal))
+    // js.Global().Set("JoinVertical", js.FuncOf(lip.JoinVertical))
+    // js.Global().Set("border", js.FuncOf(lip.border))
+    // js.Global().Set("width", js.FuncOf(lip.width))
+    // js.Global().Set("height", js.FuncOf(lip.height))
+    js.Global().Set("newTable", js.FuncOf(lip.newTable))
+    // js.Global().Set("tableStyle", js.FuncOf(lip.tableStyle))
+    js.Global().Set("join", js.FuncOf(lip.Join))
 
-	// Export the `add` function to JavaScript
-	// js.Global().Set("add", js.FuncOf(add))
-	// js.Global().Set("greet", js.FuncOf(greet))
-	// js.Global().Set("multiply", js.FuncOf(multiply))
-	// js.Global().Set("processUser", js.FuncOf(processUser))
-	// js.Global().Set("asyncAdd", js.FuncOf(asyncAdd))
-	// js.Global().Set("lipprint", js.FuncOf(printWithGloss))
-	// js.Global().Set("lipgloss", js.Func(lipgloss.NewStyle))
-	js.Global().Set("createStyle", js.FuncOf(lip.createStyle))
-	js.Global().Set("apply", js.FuncOf(lip.apply))
-	// js.Global().Set("canvasColor", js.FuncOf(lip.canvasColor))
-	// js.Global().Set("padding", js.FuncOf(lip.canvasColor))
-	// js.Global().Set("render", js.FuncOf(lip.render))
-	// js.Global().Set("margin", js.FuncOf(lip.margin))
-	// js.Global().Set("place", js.FuncOf(lip.place))
-	// js.Global().Set("size", js.FuncOf(lip.size))
-	// js.Global().Set("JoinHorizontal", js.FuncOf(lip.JoinHorizontal))
-	// js.Global().Set("JoinVertical", js.FuncOf(lip.JoinVertical))
-	// js.Global().Set("border", js.FuncOf(lip.border))
-	// js.Global().Set("width", js.FuncOf(lip.width))
-	// js.Global().Set("height", js.FuncOf(lip.height))
-	js.Global().Set("newTable", js.FuncOf(lip.newTable))
-	// js.Global().Set("tableStyle", js.FuncOf(lip.tableStyle))
-	js.Global().Set("join", js.FuncOf(lip.Join))
+    // Example user input
+    // input := "lipgloss.NewStyle().Foreground(lipgloss.Color(fg)).Background(lipgloss.Color(bg))"
 
-	// Example user input
-	// input := "lipgloss.NewStyle().Foreground(lipgloss.Color(fg)).Background(lipgloss.Color(bg))"
+    // Assuming user provides these values
+    // fg := "#FF0000" // red
+    // bg := "#00FF00" // green
 
-	// // Assuming user provides these values
-	// fg := "#FF0000" // red
-	// bg := "#00FF00" // green
+    // style := buildStyleFromInput(input, fg, bg)
 
-	// // style := buildStyleFromInput(input, fg, bg)
-
-	// // Print styled text to see the result
-	// styledText := style.Render("Hello, Styled World!")
-	// fmt.Println(styledText)
-	// // Keep the program running (WebAssembly runs until manually stopped)
-	select {} // loop
+    // Print styled text to see the result
+    // styledText := style.Render("Hello, Styled World!")
+    // fmt.Println(styledText)
+    // Keep the program running (WebAssembly runs until manually stopped)
+    select {} // loop
 }
 ```
 yeah really bad and that's just main.
